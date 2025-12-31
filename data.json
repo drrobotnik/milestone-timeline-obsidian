@@ -1,0 +1,12 @@
+{
+  "dateFormat": "YYYY-MM-DD",
+  "sortOrder": "asc",
+  "showFileLinks": true,
+  "monthThreshold": 10,
+  "excludeScreenshots": true,
+  "includeTagDates": false,
+  "dateFormatPreference": "US",
+  "language": "en",
+  "includeYearOnly": false,
+  "showYearMarkersWithYearOnly": true
+}
