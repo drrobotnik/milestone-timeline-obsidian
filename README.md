@@ -2,6 +2,8 @@
 
 An intelligent Obsidian plugin that automatically extracts dates from your notes and displays them on a beautiful, interactive vertical timeline. Perfect for tracking project milestones, historical events, personal journals, or any time-based information in your vault.
 
+![The timeline in action](./assets\banner-milestone-timeline.jpg)
+
 ## ✨ Features
 
 ### 🔍 Smart Date Detection
