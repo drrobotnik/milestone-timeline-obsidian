@@ -36,9 +36,9 @@ No more potential year references to review.
 `;
             const component = new Component();
             component.load();
-            
+
             await MarkdownRenderer.render(this.app, markdown, contentEl, '', component);
-            
+
             const closeBtn = contentEl.createEl('button', { text: 'Close' });
             closeBtn.addEventListener('click', () => this.close());
             return;
@@ -49,7 +49,7 @@ No more potential year references to review.
         // Header with title and progress
         const header = contentEl.createDiv('potential-years-header');
         header.createEl('h2', { text: 'Potential date reference' });
-        header.createEl('span', { 
+        header.createEl('span', {
             text: `${this.currentIndex + 1} / ${this.matches.length}`,
             cls: 'potential-years-progress'
         });
@@ -71,12 +71,26 @@ No more potential year references to review.
 
         // Context with highlighted year
         const contextDiv = contentEl.createDiv('potential-years-context');
-        const highlightedContext = match.context.replace(
-            new RegExp(`\\b${match.year}\\b`, 'g'),
-            `<mark>${match.year}</mark>`
-        );
-        // eslint-disable-next-line @microsoft/sdl/no-inner-html -- Highlighting year matches with mark tags
-        contextDiv.innerHTML = highlightedContext;
+        const yearRegex = new RegExp(`\\b${match.year}\\b`, 'g');
+        let lastIndex = 0;
+        let regexMatch;
+
+        while ((regexMatch = yearRegex.exec(match.context)) !== null) {
+            // Add text before the year
+            if (regexMatch.index > lastIndex) {
+                contextDiv.appendText(match.context.substring(lastIndex, regexMatch.index));
+            }
+
+            // Add highlighted year
+            contextDiv.createEl('mark', { text: match.year });
+
+            lastIndex = yearRegex.lastIndex;
+        }
+
+        // Add remaining text after last match
+        if (lastIndex < match.context.length) {
+            contextDiv.appendText(match.context.substring(lastIndex));
+        }
 
         // Instructions as markdown
         const instructions = `
@@ -141,21 +155,21 @@ No more potential year references to review.
     async addYearTag(match: YearMatch) {
         const content = await this.app.vault.read(match.file);
         const lines = content.split('\n');
-        
+
         if (match.lineNumber > 0 && match.lineNumber <= lines.length) {
             const line = lines[match.lineNumber - 1];
-            
+
             // Find the year in the line and add #year/ tag after it
             const yearMatch = new RegExp(`\\b${match.year}\\b`).exec(line);
             if (yearMatch) {
                 const before = line.substring(0, yearMatch.index + match.year.length);
                 const after = line.substring(yearMatch.index + match.year.length);
-                
+
                 // Add the tag right after the year
                 lines[match.lineNumber - 1] = `${before} #year/${match.year}${after}`;
-                
+
                 await this.app.vault.modify(match.file, lines.join('\n'));
-                
+
                 // Refresh the timeline view if it's open
                 this.plugin.refreshOpenViews();
             }

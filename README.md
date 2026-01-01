@@ -77,7 +77,7 @@ This creates sample letters in their **original languages**:
 
 ### Opening the Timeline
 - **Ribbon Icon**: Click the calendar-clock icon in the left sidebar
-- **Command Palette**: Press `Ctrl/Cmd+P` and search for "Open Milestone Timeline"
+- **Command Palette**: Press `Ctrl/Cmd+P` and search for "Open milestone timeline"
 - The timeline opens in the right sidebar by default
 
 ### Adding Dates to Your Notes
